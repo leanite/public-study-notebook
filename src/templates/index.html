@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Public Study Notebook - Home</title>
+  <meta name="description" content="Meus estudos sobre programação, algoritmos e estruturas de dados">
+  
+  <style>
+    :root {
+      --bg-primary: #ffffff;
+      --bg-secondary: #f5f5f5;
+      --text-primary: #1a1a1a;
+      --text-secondary: #666666;
+      --border-color: #e0e0e0;
+      --link-color: #0066cc;
+      --card-shadow: rgba(0, 0, 0, 0.1);
+    }
+
+    [data-theme="dark"] {
+      --bg-primary: #1a1a1a;
+      --bg-secondary: #2d2d2d;
+      --text-primary: #e0e0e0;
+      --text-secondary: #a0a0a0;
+      --border-color: #404040;
+      --link-color: #4da6ff;
+      --card-shadow: rgba(0, 0, 0, 0.3);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .header {
+      background-color: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-color);
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .header a {
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+
+    .theme-toggle:hover {
+      background-color: var(--bg-secondary);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .hero h2 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+    }
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 2rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--border-color);
+    }
+
+    .studies-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
+
+    .study-card {
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      text-decoration: none;
+      color: var(--text-primary);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .study-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px var(--card-shadow);
+    }
+
+    .study-card-banner {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .study-card-content {
+      padding: 1.5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .study-card-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .study-card-meta {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .study-card-tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: auto;
+    }
+
+    .study-card-tag {
+      background-color: var(--bg-primary);
+      padding: 0.25rem 0.75rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      border: 1px solid var(--border-color);
+    }
+
+    .all-studies-list {
+      list-style: none;
+    }
+
+    .all-studies-list li {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .all-studies-list li:last-child {
+      border-bottom: none;
+    }
+
+    .all-studies-list a {
+      text-decoration: none;
+      color: var(--text-primary);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: color 0.2s ease;
+    }
+
+    .all-studies-list a:hover {
+      color: var(--link-color);
+    }
+
+    .all-studies-list .study-title {
+      font-weight: 500;
+      font-size: 1.1rem;
+    }
+
+    .all-studies-list .study-date {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        padding: 1rem;
+      }
+
+      .container {
+        padding: 2rem 1rem;
+      }
+
+      .hero h2 {
+        font-size: 2rem;
+      }
+
+      .studies-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1><a href="/">📚 Public Study Notebook</a></h1>
+    <button class="theme-toggle" id="themeToggle">🌙 Dark Mode</button>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h2>🎓 Meu Caderno de Estudos</h2>
+      <p>Documentando minha jornada de aprendizado em programação</p>
+    </section>
+
+    {{FEATURED_SECTION}}
+
+    <section>
+      <h3 class="section-title">📝 Todos os Studies</h3>
+      <ul class="all-studies-list">
+        {{ALL_STUDIES}}
+      </ul>
+    </section>
+  </main>
+
+  <script>
+    // Dark mode toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+    
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    html.setAttribute('data-theme', savedTheme);
+    updateToggleButton(savedTheme);
+
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateToggleButton(newTheme);
+    });
+
+    function updateToggleButton(theme) {
+      themeToggle.textContent = theme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+    }
+  </script>
+</body>
+</html>

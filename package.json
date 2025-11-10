@@ -1,0 +1,31 @@
+{
+    "name": "public-study-notebook",
+    "version": "1.0.0",
+    "description": "Static site generator for study notes from Markdown",
+    "main": "index.js",
+    "scripts": {
+        "build": "tsx src/scripts/build.ts",
+        "dev": "tsx src/scripts/build.ts && npx http-server build -p 8080",
+        "clean": "rm -rf build && mkdir build"
+    },
+    "keywords": [
+        "markdown",
+        "static-site",
+        "studies"
+    ],
+    "author": "",
+    "license": "MIT",
+    "devDependencies": {
+        "@types/fs-extra": "^11.0.4",
+        "@types/markdown-it": "^14.1.2",
+        "@types/node": "^22.10.1",
+        "tsx": "^4.19.2",
+        "typescript": "^5.7.2"
+    },
+    "dependencies": {
+        "fs-extra": "^11.2.0",
+        "gray-matter": "^4.0.3",
+        "markdown-it": "^14.1.0",
+        "markdown-it-anchor": "^9.2.0"
+    }
+}
