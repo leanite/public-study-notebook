@@ -31,7 +31,9 @@ jobs:
         run: npm ci
       
       - name: Build site
-        run: npm run build
+        run: npm run build:prod
+        env:
+          BASE_PATH: /public-study-notebook
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

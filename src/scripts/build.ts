@@ -29,6 +29,9 @@ const PATHS = {
   featured: path.join(process.cwd(), 'src', 'featured-studies.json')
 };
 
+// Base path para produção (ex: /public-study-notebook/)
+const BASE_PATH = process.env.BASE_PATH || '';
+
 // Escape HTML para código
 function escapeHtml(unsafe: string): string {
   return unsafe
@@ -111,10 +114,10 @@ function processMarkdownFile(filePath: string): Study {
   // Converte markdown para HTML
   const htmlContent = md.render(content);
   
-  // Ajusta links internos (.md -> .html)
+  // Ajusta links internos (.md -> .html) com BASE_PATH
   const adjustedHtml = htmlContent.replace(
     /href="([^"]+)\.md"/g, 
-    'href="$1.html"'
+    (match, path) => `href="${BASE_PATH}/${path}.html"`
   );
   
   // Extrai headings do HTML (após conversão, com IDs corretos)
@@ -164,6 +167,7 @@ function generateStudyPage(study: Study, template: string): string {
   return template
     .replace('{{TITLE}}', study.title)
     .replace('{{DESCRIPTION}}', `Estudo sobre ${study.title}`)
+    .replace('{{BASE_PATH}}', BASE_PATH)
     .replace('{{CONTENT}}', contentHtml);
 }
 
@@ -184,7 +188,7 @@ function generateIndexPage(studies: Study[], template: string): string {
         if (!study) return '';
         
         return `
-          <a href="/${study.slug}.html" class="study-card">
+          <a href="${BASE_PATH}/${study.slug}.html" class="study-card">
             <img src="${study.banner}" alt="${study.title}" class="study-card-banner">
             <div class="study-card-content">
               <h3 class="study-card-title">${study.title}</h3>
@@ -217,7 +221,7 @@ function generateIndexPage(studies: Study[], template: string): string {
   const allStudiesList = sortedStudies
     .map(study => `
       <li>
-        <a href="/${study.slug}.html">
+        <a href="${BASE_PATH}/${study.slug}.html">
           <span class="study-title">${study.title}</span>
           <span class="study-date">${new Date(study.date).toLocaleDateString('pt-BR')}</span>
         </a>
@@ -226,6 +230,7 @@ function generateIndexPage(studies: Study[], template: string): string {
     .join('');
   
   return template
+    .replace('{{BASE_PATH}}', BASE_PATH)
     .replace('{{FEATURED_SECTION}}', featuredSection)
     .replace('{{ALL_STUDIES}}', allStudiesList);
 }

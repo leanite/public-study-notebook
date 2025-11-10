@@ -5,6 +5,8 @@
     "main": "index.js",
     "scripts": {
         "build": "tsx src/scripts/build.ts",
+        "build:dev": "tsx src/scripts/build.ts",
+        "build:prod": "BASE_PATH=/public-study-notebook tsx src/scripts/build.ts",
         "dev": "tsx src/scripts/build.ts && npx http-server build -p 8080",
         "clean": "rm -rf build && mkdir build"
     },
