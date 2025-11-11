@@ -27,12 +27,15 @@ const md = new MarkdownIt({
   })
 });
 
+const ABSOLUTE_URL_REGEX = /^(?:[a-z]+:)?\/\//i;
+
 // Caminhos do projeto
 const PATHS = {
   studies: path.join(process.cwd(), 'src', 'studies'),
   build: path.join(process.cwd(), 'build'),
   templates: path.join(process.cwd(), 'src', 'templates'),
-  featured: path.join(process.cwd(), 'src', 'featured-studies.json')
+  featured: path.join(process.cwd(), 'src', 'featured-studies.json'),
+  media: path.join(process.cwd(), 'src', 'media')
 };
 
 // Base path para produção (ex: /public-study-notebook/)
@@ -46,6 +49,48 @@ function escapeHtml(unsafe: string): string {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
+}
+
+function normalizeMediaRelativePath(src: string): string | null {
+  if (!src || ABSOLUTE_URL_REGEX.test(src)) {
+    return null;
+  }
+  
+  const cleaned = src
+    .trim()
+    .replace(/^(\.\.\/)+/, '')
+    .replace(/^\.\//, '')
+    .replace(/^\/+/, '');
+  
+  if (!cleaned.startsWith('media/')) {
+    return null;
+  }
+  
+  return cleaned;
+}
+
+function buildMediaUrl(relativePath: string): string {
+  const normalizedBase = (BASE_PATH || '').replace(/^\/+|\/+$/g, '');
+  const cleanedRelative = relativePath.replace(/^\/+/, '');
+  
+  if (!normalizedBase) {
+    return `/${cleanedRelative}`;
+  }
+  
+  return `/${normalizedBase}/${cleanedRelative}`;
+}
+
+function applyBasePathToMedia(html: string): string {
+  const SRC_REGEX = /src="([^"]+)"/g;
+  
+  return html.replace(SRC_REGEX, (match, src) => {
+    const mediaRelative = normalizeMediaRelativePath(src);
+    if (!mediaRelative) {
+      return match;
+    }
+    
+    return `src="${buildMediaUrl(mediaRelative)}"`;
+  });
 }
 
 // Encontra todos os arquivos .md recursivamente
@@ -82,8 +127,9 @@ function processMarkdownFile(filePath: string): Study {
   const relativePath = path.relative(PATHS.studies, filePath);
   const slug = relativePath.replace(/\.md$/, '').replace(/\\/g, '/');
   
-  // Converte markdown para HTML
-  const htmlContent = md.render(content);
+  // Converte markdown para HTML e aplica BASE_PATH em imagens
+  const rawHtmlContent = md.render(content);
+  const htmlContent = applyBasePathToMedia(rawHtmlContent);
   
   // Ajusta links internos (.md -> .html) com BASE_PATH
   const adjustedHtml = htmlContent.replace(
@@ -263,6 +309,12 @@ async function build() {
   if (fs.existsSync(assetsPath)) {
     await fs.copy(assetsPath, path.join(PATHS.build, 'assets'));
     console.log('✅ Assets copiados');
+  }
+  
+  // Copia media (imagens referenciadas nos estudos)
+  if (fs.existsSync(PATHS.media)) {
+    await fs.copy(PATHS.media, path.join(PATHS.build, 'media'));
+    console.log('✅ Media copiado');
   }
   
   console.log(`\n🎉 Build concluído! ${studies.length} studies gerados.`);
