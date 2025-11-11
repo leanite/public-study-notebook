@@ -32,7 +32,8 @@ const PATHS = {
   studies: path.join(process.cwd(), 'src', 'studies'),
   build: path.join(process.cwd(), 'build'),
   templates: path.join(process.cwd(), 'src', 'templates'),
-  featured: path.join(process.cwd(), 'src', 'featured-studies.json')
+  featured: path.join(process.cwd(), 'src', 'featured-studies.json'),
+  media: path.join(process.cwd(), 'src', 'media')
 };
 
 // Base path para produção (ex: /public-study-notebook/)
@@ -263,6 +264,12 @@ async function build() {
   if (fs.existsSync(assetsPath)) {
     await fs.copy(assetsPath, path.join(PATHS.build, 'assets'));
     console.log('✅ Assets copiados');
+  }
+  
+  // Copia media (imagens referenciadas nos estudos)
+  if (fs.existsSync(PATHS.media)) {
+    await fs.copy(PATHS.media, path.join(PATHS.build, 'media'));
+    console.log('✅ Media copiado');
   }
   
   console.log(`\n🎉 Build concluído! ${studies.length} studies gerados.`);

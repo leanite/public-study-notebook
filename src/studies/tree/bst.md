@@ -30,7 +30,7 @@ Uma árvore binária de busca é uma **estrutura de dados hierárquica** onde ca
 
 Pense na BST como uma árvore genealógica onde cada pessoa tem no máximo dois filhos, mas com uma regra especial: o filho da esquerda sempre nasceu antes (valor menor) e o filho da direita nasceu depois (valor maior). Quando você quer encontrar alguém específico, você começa pela raiz e decide a cada nó se vai para esquerda ou direita, eliminando metade das possibilidades a cada passo — pelo menos em teoria. Na prática, se você inserir os elementos em ordem crescente (1, 2, 3, 4...), a árvore vira uma lista encadeada torta e perde toda a eficiência.
 
-![Estrutura básica de uma BST](computer:///mnt/user-data/outputs/bst_estrutura_basica.png)
+![Estrutura básica de uma BST](../../media/tree/bst/bst_estrutura_basica.png)
 
 **Figura 1: Estrutura básica de uma BST**  
 *Alt:* Árvore com raiz 8, mostrando a ordenação: esquerda menor que nó menor que direita  
@@ -264,7 +264,7 @@ Ramificando a partir do conceito central, você tem três grandes operações �
 
 Conectado às operações, você tem a **análise de complexidade**, que depende crucialmente da **altura da árvore**. A altura se conecta ao conceito de **balanceamento**: árvores balanceadas têm altura O(log n), árvores degeneradas têm altura O(n). O balanceamento leva a estruturas avançadas como AVL e Red-Black, que ficam fora do escopo deste caderno mas são o próximo passo natural.
 
-![Panorama conceitual da BST](computer:///mnt/user-data/outputs/bst_panorama_conceitual.png)
+![Panorama conceitual da BST](../../media/tree/bst/bst_panorama_conceitual.png)
 
 **Figura 3: Mapa conceitual da BST**  
 *Alt:* Diagrama mostrando conexões entre conceitos fundamentais da BST  
@@ -315,7 +315,7 @@ Por fim, no lado prático, você tem **aplicações reais**: índices de banco d
 
 **Por que funciona:** O sucessor in-order é o próximo valor em ordem crescente. Ao colocá-lo no lugar do nó removido, a propriedade de BST é mantida porque todos os valores à esquerda continuam menores e todos à direita continuam maiores.
 
-![Fluxograma de remoção em BST](computer:///mnt/user-data/outputs/bst_fluxograma_remocao.png)
+![Fluxograma de remoção em BST](../../media/tree/bst/bst_fluxograma_remocao.png)
 
 **Figura 2: Fluxograma de remoção em BST**  
 *Alt:* Diagrama de decisão para os três casos de remoção de nó  
@@ -880,7 +880,7 @@ def é_bst(raiz, min=-∞, max=+∞):
             é_bst(raiz.dir, raiz.val, max))
 ```
 
-![Comparação: BST balanceada vs degenerada](computer:///mnt/user-data/outputs/bst_balanceada_vs_degenerada.png)
+![Comparação: BST balanceada vs degenerada](../../media/tree/bst/bst_balanceada_vs_degenerada.png)
 
 **Figura 4: Impacto do balanceamento**  
 *Alt:* Comparação lado a lado de árvore balanceada (altura 3) e degenerada (altura 6) com 7 nós  

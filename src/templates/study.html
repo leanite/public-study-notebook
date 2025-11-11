@@ -294,6 +294,69 @@
       color: var(--text-primary);
     }
 
+    /* Prism overrides for light mode (improve contrast) */
+    html:not([data-theme="dark"]) .content pre {
+      background-color: #f8f8fb;
+      border-color: #d5d9eb;
+    }
+
+    html:not([data-theme="dark"]) .content pre code,
+    html:not([data-theme="dark"]) .content code {
+      color: #1b1b1f;
+    }
+
+    html:not([data-theme="dark"]) .token.comment,
+    html:not([data-theme="dark"]) .token.prolog,
+    html:not([data-theme="dark"]) .token.doctype {
+      color: #6b7280;
+    }
+
+    html:not([data-theme="dark"]) .token.punctuation {
+      color: #3b4151;
+    }
+
+    html:not([data-theme="dark"]) .token.property,
+    html:not([data-theme="dark"]) .token.tag,
+    html:not([data-theme="dark"]) .token.boolean,
+    html:not([data-theme="dark"]) .token.number,
+    html:not([data-theme="dark"]) .token.constant,
+    html:not([data-theme="dark"]) .token.symbol {
+      color: #c026d3;
+    }
+
+    html:not([data-theme="dark"]) .token.selector,
+    html:not([data-theme="dark"]) .token.attr-name,
+    html:not([data-theme="dark"]) .token.string,
+    html:not([data-theme="dark"]) .token.char,
+    html:not([data-theme="dark"]) .token.builtin {
+      color: #0f9d58;
+    }
+
+    html:not([data-theme="dark"]) .token.keyword {
+      color: #2563eb;
+      font-weight: 600;
+    }
+
+    html:not([data-theme="dark"]) .token.function,
+    html:not([data-theme="dark"]) .token.class-name {
+      color: #b45309;
+    }
+
+    html:not([data-theme="dark"]) .token.operator,
+    html:not([data-theme="dark"]) .token.entity,
+    html:not([data-theme="dark"]) .token.url {
+      color: #b91c1c;
+    }
+
+    html:not([data-theme="dark"]) .token.important,
+    html:not([data-theme="dark"]) .token.bold {
+      font-weight: 700;
+    }
+
+    html:not([data-theme="dark"]) .token.italic {
+      font-style: italic;
+    }
+
     .content blockquote {
       border-left: 3px solid var(--border-color);
       padding-left: 1.25rem;
