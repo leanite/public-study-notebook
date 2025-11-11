@@ -18,7 +18,13 @@ const md = new MarkdownIt({
     return `<pre class="line-numbers"><code>${escapeHtml(str)}</code></pre>`;
   }
 }).use(anchor, {
-  permalink: anchor.permalink.headerLink()
+  permalink: anchor.permalink.linkInsideHeader({
+    symbol: '',
+    renderAttrs: () => ({
+      'aria-hidden': 'true',
+      tabindex: '-1'
+    })
+  })
 });
 
 // Caminhos do projeto
@@ -40,41 +46,6 @@ function escapeHtml(unsafe: string): string {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
-}
-
-// Extrai headings do conteúdo para gerar TOC
-function extractHeadings(htmlContent: string): Array<{ level: number; text: string; id: string }> {
-  const headings: Array<{ level: number; text: string; id: string }> = [];
-  const headingRegex = /<h([1-3])[^>]*id="([^"]+)"[^>]*>(.+?)<\/h\1>/g;
-  let match;
-
-  while ((match = headingRegex.exec(htmlContent)) !== null) {
-    const level = parseInt(match[1]);
-    const id = match[2];
-    // Remove tags HTML do texto (ex: <a> links que o markdown-it-anchor adiciona)
-    const text = match[3].replace(/<[^>]+>/g, '').trim();
-    headings.push({ level, text, id });
-  }
-
-  return headings;
-}
-
-// Gera HTML do TOC
-function generateTOC(headings: Array<{ level: number; text: string; id: string }>): string {
-  if (headings.length === 0) return '';
-
-  const tocItems = headings
-    .map(h => `<li class="toc-item toc-level-${h.level}"><a href="#${h.id}">${h.text}</a></li>`)
-    .join('\n');
-
-  return `
-    <nav class="toc">
-      <h4 class="toc-title">📑 Índice</h4>
-      <ul class="toc-list">
-        ${tocItems}
-      </ul>
-    </nav>
-  `;
 }
 
 // Encontra todos os arquivos .md recursivamente
@@ -120,9 +91,6 @@ function processMarkdownFile(filePath: string): Study {
     (match, path) => `href="${BASE_PATH}/${path}.html"`
   );
   
-  // Extrai headings do HTML (após conversão, com IDs corretos)
-  const headings = extractHeadings(adjustedHtml);
-  
   return {
     title: data.title,
     banner: data.banner,
@@ -130,8 +98,7 @@ function processMarkdownFile(filePath: string): Study {
     date: data.date,
     slug,
     htmlContent: adjustedHtml,
-    rawContent: content,
-    toc: generateTOC(headings)
+    rawContent: content
   };
 }
 
@@ -149,19 +116,17 @@ function generateStudyPage(study: Study, template: string): string {
             ${study.tags.map(tag => `<span class="tag">#${tag}</span>`).join('')}
           </div>
         ` : ''}
+        <button class="print-button" onclick="generatePDF()">💾 Salvar como PDF</button>
       </div>
     </div>
   `;
   
   const contentHtml = `
-    ${study.toc}
-    <div class="content-wrapper">
-      ${bannerHtml}
-      ${headerHtml}
-      <article class="content">
-        ${study.htmlContent}
-      </article>
-    </div>
+    ${bannerHtml}
+    ${headerHtml}
+    <article class="content">
+      ${study.htmlContent}
+    </article>
   `;
   
   return template

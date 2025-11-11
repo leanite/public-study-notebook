@@ -4,7 +4,7 @@ tags: [tree, data-structure]
 date: 2024-01-15
 banner: hue.jpg
 ---
-# Caderno Ultra-Claro: Árvores Binárias de Busca (BST)
+# Árvores Binárias de Busca (BST)
 
 **Disciplina:** Estruturas de Dados  
 **Tema(s):** Binary Search Trees — estrutura, operações, análise de complexidade  

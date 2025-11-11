@@ -9,7 +9,6 @@ export interface StudyMetadata {
 export interface Study extends StudyMetadata {
     htmlContent: string;
     rawContent: string; // Markdown original
-    toc: string; // Table of Contents HTML
 }
   
 export interface FeaturedStudy {
